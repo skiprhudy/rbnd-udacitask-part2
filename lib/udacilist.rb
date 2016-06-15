@@ -44,12 +44,26 @@ class UdaciList
     puts '-' * @title.length
     puts @title
     puts '-' * @title.length
-    @items.each_with_index do |item, position|
-      puts "#{position + 1}) #{item.details}"
-    end
+    list_item_array(@items)
+  end
+
+  def filter(type)
+    @title = "Filtered By Type: #{type.capitalize}"
+    puts '-' * @title.length
+    puts @title
+    puts '-' * @title.length
+    class_name = get_type(type)
+    type_ary = @items.select{ |item| item.class.name == class_name }
+    list_item_array(type_ary)
   end
 
   private
+
+  def list_item_array(ary)
+    ary.each_with_index do |item, position|
+      puts "#{position + 1}) #{item.details}"
+    end
+  end
 
   def check_type(type)
     return if VALID_TYPES.value? type
@@ -60,4 +74,17 @@ class UdaciList
     return if VALID_PRIORITY.value? priority
     raise UdaciListErrors::InvalidPriorityValue
   end
+
+  def get_type(type)
+    check_type(type)
+    case type
+    when 'todo'
+      return 'TodoItem'
+    when 'event'
+      return 'EventItem'
+    when 'link'
+      return 'LinkItem'
+    end
+  end
+
 end
