@@ -6,6 +6,10 @@ module Listable
     "#{description}".ljust(30)
   end
 
+  def format_type(type)
+    "#{type}".ljust(12)
+  end
+
   # this could get ugly, and i don't think sharing 'format_date'
   # between classes that have potentially very different
   # date requirements is a good idea.
