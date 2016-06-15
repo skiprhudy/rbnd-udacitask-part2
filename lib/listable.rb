@@ -1,3 +1,4 @@
+require 'colorize'
 # shared format methods
 module Listable
   def format_description(description)
