@@ -47,3 +47,12 @@ new_list.all
 # DEMO FILTER BY ITEM TYPE
 # ------------------------
 new_list.filter('event')
+
+# error -- bad type, uncomment to verify
+# new_list.add('motogpbike', 'ride asap')
+
+
+
+
+
+
