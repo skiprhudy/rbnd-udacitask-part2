@@ -67,12 +67,12 @@ class UdaciList
 
   def check_type(type)
     return if VALID_TYPES.value? type
-    raise UdaciListErrors::InvalidItemType
+    raise UdaciListErrors::InvalidItemType.new(type)
   end
 
   def check_priority(priority)
     return if VALID_PRIORITY.value? priority
-    raise UdaciListErrors::InvalidPriorityValue
+    raise UdaciListErrors::InvalidPriorityValue.new(priority)
   end
 
   def get_type(type)

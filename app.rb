@@ -11,6 +11,11 @@ require_relative 'lib/todo'
 require_relative 'lib/event'
 require_relative 'lib/link'
 
+# utility
+def put_error(error)
+  puts error
+end
+
 list = UdaciList.new(title: "Julia's Stuff")
 list.add('todo', 'Buy more cat food', due: '2016-02-03', priority: 'low')
 list.add('todo', 'Sweep floors', due: '2016-01-30')
@@ -36,9 +41,28 @@ new_list.add('link', 'http://ruby-doc.org')
 
 # SHOULD RETURN ERROR MESSAGES
 # ----------------------------
-# new_list.add('image', 'http://ruby-doc.org') # Throws InvalidItemType error
-# new_list.delete(9) # Throws an IndexExceedsListSize error
-# new_list.add('todo', 'Hack some portals', priority: 'super high') # throws an InvalidPriorityValue error
+# Throws InvalidItemType error
+puts
+begin
+  new_list.add('image', 'http://ruby-doc.org')
+rescue UdaciListErrors::InvalidItemType => iit
+  put_error(iit.message)
+end
+
+# Throws an IndexExceedsListSize error
+begin
+  new_list.delete(9)
+rescue UdaciListErrors::IndexExceedsListSize => iels
+  put_error(iels.message)
+end
+
+# throws an InvalidPriorityValue error
+begin
+  new_list.add('todo', 'Hack some portals', priority: 'super high')
+rescue UdaciListErrors::InvalidPriorityValue => ipv
+  put_error(ipv.message)
+end
+puts
 
 # DISPLAY UNTITLED LIST
 # ---------------------
@@ -48,8 +72,15 @@ new_list.all
 # ------------------------
 new_list.filter('event')
 
-# error -- bad type, uncomment to verify
-# new_list.add('motogpbike', 'ride asap')
+# error -- bad type
+begin
+  new_list.add('motogpbike', 'ride asap')
+rescue UdaciListErrors::InvalidItemType => iit
+  puts
+  puts iit.message
+end
+
+
 
 
 
