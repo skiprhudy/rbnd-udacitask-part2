@@ -47,6 +47,14 @@ class UdaciList
     list_item_array(@items)
   end
 
+  def item_descriptions
+    descs = []
+    @items.each do |item|
+      descs << item.description
+    end
+    descs
+  end
+
   def filter(type)
     @title = "Filtered By Type: #{type.capitalize}"
     puts '-' * @title.length

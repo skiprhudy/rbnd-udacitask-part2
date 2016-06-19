@@ -2,6 +2,7 @@ require 'bundler/setup'
 require 'chronic'
 require 'colorize'
 
+
 # Find a third gem of your choice and add it to your project
 require 'date'
 require_relative 'lib/listable'
@@ -10,6 +11,7 @@ require_relative 'lib/udacilist'
 require_relative 'lib/todo'
 require_relative 'lib/event'
 require_relative 'lib/link'
+require_relative 'lib/app_control'
 
 # utility
 def put_error(error)
@@ -78,6 +80,21 @@ begin
 rescue UdaciListErrors::InvalidItemType => iit
   puts
   puts iit.message
+end
+
+# now let's so something more interesting
+exit = false
+cli = HighLine.new
+app_ctrl = AppControl.new(cli,list)
+while app_ctrl.exit? != true
+  puts
+  cli.choose do |menu|
+    menu.prompt = "Pick one of the choices listed above (by text or number):"
+    menu.choice("Exit") { app_ctrl.handle_exit }
+    menu.choice("Add Items") { app_ctrl.add_items }
+    menu.choice("List Items") { app_ctrl.list_items }
+    menu.choice("Delete Items") { app_ctrl.delete_items }
+  end
 end
 
 
