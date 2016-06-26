@@ -1,10 +1,12 @@
+require_relative 'item'
+
 # a link to something cool
-class LinkItem
+class LinkItem < Item
   include Listable
-  attr_reader :description, :site_name
+  attr_reader :site_name
 
   def initialize(url, options = {})
-    @description = url
+    super(url)
     @site_name = options[:site_name]
   end
 

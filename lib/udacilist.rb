@@ -1,23 +1,9 @@
-module Constants
-  VALID_TYPES = {
-      todo: 'todo',
-      event: 'event',
-      link: 'link'
-  }.freeze
-  VALID_PRIORITY = {
-      low: 'low',
-      medium: 'medium',
-      high: 'high'
-  }.freeze
-end
-
+require_relative 'constants'
 
 # implements the functionality for lists
 class UdaciList
 
   attr_reader :title, :items
-
-  include Constants
 
   def initialize(options = {})
     @title = options[:title]
@@ -26,8 +12,8 @@ class UdaciList
 
   def add(type, description, options={})
     type = type.downcase
-    check_type type
-    check_priority options[:priority] if options[:priority]
+    Item::check_type(type) # guard clause for invalid types
+    Item::check_priority(options[:priority]) if options[:priority]
     @items.push TodoItem.new(description, options) if type == 'todo'
     @items.push EventItem.new(description, options) if type == 'event'
     @items.push LinkItem.new(description, options) if type == 'link'
@@ -45,6 +31,7 @@ class UdaciList
     puts @title
     puts '-' * @title.length
     list_item_array(@items)
+    puts
   end
 
   def item_descriptions
@@ -60,9 +47,16 @@ class UdaciList
     puts '-' * @title.length
     puts @title
     puts '-' * @title.length
-    class_name = get_type(type)
+    class_name = Item::get_type(type)
     type_ary = @items.select{ |item| item.class.name == class_name }
     list_item_array(type_ary)
+  end
+
+  def item_priority(priority, idx)
+    if idx < 0
+      raise UdaciListErrors::IndexUnderflowListSize
+    end
+    @items[idx].new_priority(priority)
   end
 
   private
@@ -70,28 +64,6 @@ class UdaciList
   def list_item_array(ary)
     ary.each_with_index do |item, position|
       puts "#{position + 1}) #{item.details}"
-    end
-  end
-
-  def check_type(type)
-    return if VALID_TYPES.value? type
-    raise UdaciListErrors::InvalidItemType.new(type)
-  end
-
-  def check_priority(priority)
-    return if VALID_PRIORITY.value? priority
-    raise UdaciListErrors::InvalidPriorityValue.new(priority)
-  end
-
-  def get_type(type)
-    check_type(type)
-    case type
-    when 'todo'
-      return 'TodoItem'
-    when 'event'
-      return 'EventItem'
-    when 'link'
-      return 'LinkItem'
     end
   end
 

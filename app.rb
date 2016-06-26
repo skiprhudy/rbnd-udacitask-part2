@@ -44,6 +44,7 @@ new_list.add('link', 'http://ruby-doc.org')
 # SHOULD RETURN ERROR MESSAGES
 # ----------------------------
 # Throws InvalidItemType error
+# rescue clauses are so i don't have to comment out
 puts
 begin
   new_list.add('image', 'http://ruby-doc.org')
@@ -74,7 +75,7 @@ new_list.all
 # ------------------------
 new_list.filter('event')
 
-# error -- bad type
+# error -- invalid item type
 begin
   new_list.add('motogpbike', 'ride asap')
 rescue UdaciListErrors::InvalidItemType => iit
@@ -89,11 +90,12 @@ app_ctrl = AppControl.new(cli,list)
 while app_ctrl.exit? != true
   puts
   cli.choose do |menu|
-    menu.prompt = "Pick one of the choices listed above (by text or number):"
-    menu.choice("Exit") { app_ctrl.handle_exit }
     menu.choice("Add Items") { app_ctrl.add_items }
     menu.choice("List Items") { app_ctrl.list_items }
     menu.choice("Delete Items") { app_ctrl.delete_items }
+    menu.choice('Change Priority') { app_ctrl.change_priority }
+    menu.choice("Exit") { app_ctrl.handle_exit }
+    menu.prompt = "Pick one of the choices listed above (by text or number):"
   end
 end
 

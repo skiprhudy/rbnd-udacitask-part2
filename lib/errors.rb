@@ -12,8 +12,8 @@ module UdaciListErrors
     end
   end
 
-  class IndexExceedsListSize < StandardError
-  end
+  class IndexExceedsListSize < StandardError; end
+  class IndexUnderflowListSize < StandardError; end
 
   class InvalidPriorityValue < StandardError
     def initialize(priority)

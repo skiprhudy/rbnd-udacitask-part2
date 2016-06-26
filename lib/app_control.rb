@@ -1,6 +1,10 @@
 require 'highline'
+require_relative 'constants'
 
 class AppControl
+
+  include Constants
+
   def initialize(cli, list = nil)
     @cli = cli
     @list = list
@@ -41,11 +45,23 @@ class AppControl
   def delete_items
     puts
     @cli.choose do |menu|
-      @list.all.each_with_index do |item, idx |
+      @list.items.each_with_index do |item, idx |
         menu.choice(item.description) { @list.delete(idx + 1)}
       end
       menu.choice('Go back') { return }
       menu.prompt = 'Choose item to delete from above:'
+    end
+    puts
+  end
+
+  def change_priority
+    puts
+    @cli.choose do |menu|
+      @list.items.each_with_index do |item, idx |
+        menu.choice(item.description) { new_priority idx }
+      end
+      menu.choice('Go back') { return }
+      menu.prompt = 'Choose item above:'
     end
     puts
   end
@@ -70,7 +86,7 @@ class AppControl
   # add_event, and add_link
   def add_todo
     puts
-    desc = description
+    desc = description('Todo description (required):')
     return if desc.nil?
     due = due_date
     priority = item_priority
@@ -80,7 +96,7 @@ class AppControl
 
   def add_event
     puts
-    desc = description
+    desc = description('Event description (required):')
     return if desc.nil?
     start_date = starting_date
     return if start_date.nil?
@@ -92,17 +108,17 @@ class AppControl
 
   def add_link
     puts
-    desc = description
+    desc = description('Link (required):')
     return if desc.nil?
     site = site_name
     @list.add('link', desc, { site_name: site })
     puts
   end
 
-  def description
-    desc = @cli.ask('Todo description (required):')
+  def description(message)
+    desc = @cli.ask(message)
     if desc.empty?
-      puts 'Sorry a non-empty description is required'
+      puts 'Sorry, an answer is required.'
       return
     end
     desc
@@ -137,7 +153,7 @@ class AppControl
   end
 
   def ending_date
-    end_date = @cli.ask('What is the end date? (required:')
+    end_date = @cli.ask('What is the end date? (required:)')
     if end_date.empty?
       puts 'Sorry a valid end date is required.'
       return nil
@@ -149,5 +165,14 @@ class AppControl
     site = @cli.ask('What is the site name? (optional)')
     site = nil if site.empty?
     site
+  end
+
+  def new_priority(idx)
+    priority = @cli.ask('Choose priority (low, medium, high):')
+    if priority.empty? || VALID_PRIORITY.include?(priority)
+      puts "Sorry a valid priority is required."
+      return
+    end
+    @list.item_priority priority, idx
   end
 end
