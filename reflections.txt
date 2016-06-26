@@ -1,13 +1,44 @@
 # What you added to Udacitask 2.0
 # -------------------------------------------------------
 1. What is the gem of your choice and how did you use it?
+I used highline. I wanted a more useful interface to the app,
+one that would allow a user to interact without writing code.
+So I developed a series of menus that allows a user to access
+the functionality implemented in Udacitask 2.0
+
 2. Describe the 2 features you added to the project.
   a) Feature 1...
+I added a menu system as described above using highline. It
+allows a user to add items, list items, delete items, and change
+item priority
   b) Feature 2...
+I added the ability to change item priority via the highline
+menu.
 
 # REFLECTIONS
 # -------------------------------------------------------
 1. How long did you spend working on this project?
+I guesstimate 16 hours all told. 10 hours writting code
+and refactoring, 2 hours debugging, 4 hours thinking about it.
+
 2. What was the most rewarding challenge you conquered?
+Learning highline and getting to repeatedly refactor as I added
+the menu system and the ability to change priority for items.
+
 3. What two additional features did you build? Why?
+a) A menu system and changing priorities. In my view a menu system
+was a minimal must to make the app have any real value, since
+a user shouldn't have to write code to use it.
+b) Ability to change priorities. Because our priorities change
+all the time.
+
 4. Where do you still have room to grow?
+There's no end to understanding new design patterns and techniques
+in any language, and Ruby has become the language and technology
+stack I'm most interested in becoming an expert at. I'm polyglot
+(C, C++, C#, Java); but I have come to understand that I need to
+enhance my many years of experience by having extremely deep knowledge
+of at least one language and technology stack: I like Ruby and its
+technology stack more than all the other languages / stacks I have
+worked with. Ruby is especially useful for me in my current career
+which involves heavy automation development work.
